@@ -1,10 +1,15 @@
 pipeline {
     agent any
 
+    tools {
+        // Use the tool name you configured for Java 8
+        jdk 'java8'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
             }
         }
 
