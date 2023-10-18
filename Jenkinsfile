@@ -4,28 +4,34 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the GitHub repository
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
             }
         }
 
         stage('Build') {
             steps {
-                // Build the project using Maven
-                sh 'mvn clean package' // Adjust this to your actual build command
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests and collect test results
+                sh 'mvn test' // Modify the test command as needed
+
+                // Archive test results for Jenkins to display
+                junit '**/target/surefire-reports/*.xml'
             }
         }
     }
 
     post {
         success {
-            // Notify or perform additional tasks on successful build
-            echo 'Build successful!'
+            echo 'Build and tests successful!'
         }
 
         failure {
-            // Notify or perform additional tasks on build failure
-            echo 'Build failed. Please investigate.'
+            echo 'Build and tests failed. Please investigate.'
         }
     }
 }
