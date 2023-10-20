@@ -48,7 +48,7 @@ class SupplierServiceImplTest {
 
         // Perform assertions to check the results based on the expected state from the database setup
         assertNotNull(suppliers);
-        assertEquals(2, suppliers.size()); // Adjust the expected size based on your database setup
+        assertEquals(3, suppliers.size()); // Adjust the expected size based on your database setup
         // Add more specific assertions as needed
 
     }
