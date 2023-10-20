@@ -34,10 +34,8 @@ pipeline {
                           JAVA_HOME = 'usr/lib/jvm/java-1.8.0-openjdk-amd64' // Replace with the actual path
                       }
                     steps {
-
-                        withSonarQubeEnv('/usr/lib/jvm/java-11-openjdk-amd64') {
                              sh 'mvn sonar:sonar' // Use 'bat' on Windows
-                        }
+
                     }
                 }
     }
