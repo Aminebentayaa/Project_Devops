@@ -30,7 +30,7 @@ pipeline {
         }
           stage('SonarQube Analysis') {
                     steps {
-                        withSonarQubeEnv('Devops-project') {
+                        withSonarQubeEnv('sonar-jenki') {
                             sh 'sonar-scanner' // Use 'bat' on Windows
                         }
                     }
