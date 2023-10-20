@@ -31,7 +31,7 @@ pipeline {
           stage('SonarQube Analysis') {
                     steps {
                         withSonarQubeEnv('sonar-jenki') {
-                            sh 'mvn sonar:sonar' // Use 'bat' on Windows
+                             sh 'mvn sonar:sonar' // Use 'bat' on Windows
                         }
                     }
                 }
