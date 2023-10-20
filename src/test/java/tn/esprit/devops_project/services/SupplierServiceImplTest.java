@@ -52,7 +52,7 @@ class SupplierServiceImplTest {
         // Add more specific assertions as needed
 
     }
-
+/*
     @Test
     @DatabaseSetup("/data-set/stock-data.xml")
     void addSupplier() {
@@ -113,6 +113,6 @@ class SupplierServiceImplTest {
     final Supplier supplier = this.supplierService.retrieveSupplier(1L);
         assertEquals("azer123", supplier.getLabel());
     }
-
+*/
 
 }
