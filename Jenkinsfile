@@ -29,15 +29,17 @@ pipeline {
             }
         }
           stage('SonarQube Analysis') {
-           environment {
-                          // Set JAVA_HOME to point to your Java 8 installation
-                          JAVA_HOME = 'usr/lib/jvm/java-1.8.0-openjdk-amd64' // Replace with the actual path
+              steps {
+                  script {
+                      def javaHome = tool name: 'java8', type: 'JDK' // Use the correct tool name
+                      sh "${javaHome}/bin/java -version" // Verify the Java version
+                      withEnv(["JAVA_HOME=${javaHome}"]) {
+                          sh 'mvn sonar:sonar'
                       }
-                    steps {
-                             sh 'mvn sonar:sonar' // Use 'bat' on Windows
+                  }
+              }
+          }
 
-                    }
-                }
     }
 
     post {
