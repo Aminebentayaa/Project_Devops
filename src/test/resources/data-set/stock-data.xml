@@ -4,4 +4,24 @@
             title="stock 1"
             ID_STOCK="1"
     />
+
+    <supplier
+
+            ID_SUPPLIER="1"
+            code="azer123"
+            label="seazr"
+
+    />
+
+    <supplier
+            ID_SUPPLIER="2"
+            code="azer12a3"
+            label="szr"
+            />
+
+    <supplier
+            ID_SUPPLIER="4"
+            code="azer12a3"
+            label="szr"
+    />
 </dataset>

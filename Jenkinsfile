@@ -28,6 +28,13 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml'
             }
         }
+          stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('Devops-project') {
+                            sh 'sonar-scanner' // Use 'bat' on Windows
+                        }
+                    }
+                }
     }
 
     post {

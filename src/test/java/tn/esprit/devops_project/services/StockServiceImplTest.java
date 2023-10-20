@@ -54,8 +54,20 @@ class StockServiceImplTest {
     @Test
     @DatabaseSetup("/data-set/stock-data.xml")
     void retrieveAllStock() {
-        final List<Stock> allStocks = this.stockService.retrieveAllStock();
-        assertEquals(allStocks.size(), 1);
+        // Call the retrieveAllStock method
+        List<Stock> allStocks = stockService.retrieveAllStock();
+
+        // Assert that the list is not null and not empty
+        assertNotNull(allStocks);
+        assertFalse(allStocks.isEmpty());
+
+        // Check the size of the list (number of elements expected in the list)
+        assertEquals(1, allStocks.size());
+
+        // Check the titles of the stocks in the list
+        assertEquals("stock 1", allStocks.get(0).getTitle());
 
     }
+
+
 }
