@@ -1,7 +1,10 @@
 pipeline {
     agent any
 
- 
+    tools {
+        // Define the JDK tool for Java 8
+        jdk 'java8' // Replace 'Java8' with your Java 8 tool name
+    }
 
     stages {
         stage('Checkout') {
@@ -27,7 +30,7 @@ pipeline {
         }
           stage('SonarQube Analysis') {
                     steps {
-                        withSonarQubeEnv('sonar-jenki') {
+                        withSonarQubeEnv('/usr/lib/jvm/java-11-openjdk-amd64') {
                              sh 'mvn sonar:sonar' // Use 'bat' on Windows
                         }
                     }
