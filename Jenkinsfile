@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-
+  
 
     stages {
         stage('Checkout') {
@@ -25,18 +25,13 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml'
             }
         }
-           stage('Build and Analyze') {
+           stage('SonarQube Analysis') {
                       steps {
-                           script {
-                               // Run the SonarQube analysis
-                               sh 'mvn clean verify sonar:sonar ' +
-                                  '-Dsonar.projectKey=sonar ' +
-                                  '-Dsonar.projectName=\'sonar\' ' +
-                                  '-Dsonar.host.url=http://192.168.33.10:9000 ' +
-                                  '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
-                           }
-                       }
-                   }
+                          withSonarQubeEnv('sonar') {
+                              sh 'mvn sonar:sonar'
+                          }
+                      }
+                  }
 
     }
 
