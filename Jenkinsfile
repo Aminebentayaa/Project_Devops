@@ -29,7 +29,7 @@ pipeline {
             }
         }
            stage('Build and Analyze') {
-                       steps {
+                      steps {
                            script {
                                // Run the SonarQube analysis
                                sh 'mvn clean verify sonar:sonar ' +
