@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    tools {
-        // Define the JDK tool for Java 8
-        jdk 'java8' // Replace 'Java8' with your Java 8 tool name
-    }
+
 
     stages {
         stage('Checkout') {
