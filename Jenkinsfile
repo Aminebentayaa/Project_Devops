@@ -3,7 +3,7 @@ pipeline {
 
 
 
-     stages {
+    stages {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
@@ -25,13 +25,16 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml'
             }
         }
-           stage('SonarQube Analysis') {
-                      steps {
-                          withSonarQubeEnv('sonar') {
-                              sh 'mvn sonar:sonar'
-                          }
-                      }
-                  }
+           script {
+                               // Run the SonarQube analysis
+                               sh 'mvn clean verify sonar:sonar ' +
+                                  '-Dsonar.projectKey=sonar ' +
+                                  '-Dsonar.projectName=\'sonar\' ' +
+                                  '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                                  '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
+                           }
+                       }
+                   }
 
     }
 
