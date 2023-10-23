@@ -28,17 +28,18 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml'
             }
         }
-          stage('SonarQube Analysis') {
-              steps {
-                  script {
-                      def javaHome = tool name: 'java8', type: 'JDK' // Use the correct tool name
-                      sh "${javaHome}/bin/java -version" // Verify the Java version
-                      withEnv(["JAVA_HOME=${javaHome}"]) {
-                          sh 'mvn sonar:sonar'
-                      }
-                  }
-              }
-          }
+           stage('Build and Analyze') {
+                       steps {
+                           script {
+                               // Run the SonarQube analysis
+                               sh 'mvn clean verify sonar:sonar ' +
+                                  '-Dsonar.projectKey=sonar ' +
+                                  '-Dsonar.projectName=\'sonar\' ' +
+                                  '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                                  '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
+                           }
+                       }
+                   }
 
     }
 
