@@ -1,10 +1,11 @@
 pipeline {
     agent any
 
+
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
             }
         }
 
@@ -17,23 +18,25 @@ pipeline {
         stage('Test') {
             steps {
                 // Run tests and collect test results
-                sh 'mvn test'
+                sh 'mvn test' // Modify the test command as needed
 
                 // Archive test results for Jenkins to display
                 junit '**/target/surefire-reports/*.xml'
             }
         }
+            stage('Build and Analyze') {
+                       steps {
+                           script {
+                               // Run the SonarQube analysis
+                               sh 'mvn clean verify sonar:sonar ' +
+                                  '-Dsonar.projectKey=sonar ' +
+                                  '-Dsonar.projectName=\'sonar\' ' +
+                                  '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                                  '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
+                           }
+                       }
+                   }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def mvnHome = tool name: 'Maven', type: 'Tool'
-                    withSonarQubeEnv('sonar') {
-                        sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devops-project -Dsonar.projectName='devops-project'"
-                    }
-                }
-            }
-        }
     }
 
     post {
