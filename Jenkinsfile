@@ -57,6 +57,7 @@ pipeline {
                                            sh 'npm version'
                                            // Install Angular dependencies and build the Angular app
                                            sh 'npm install'
+                                           sh 'npm npm install –g @angular'
                                            sh 'ng build --prod'
                                        }
                                    }
