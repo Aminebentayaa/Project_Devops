@@ -9,14 +9,13 @@ pipeline {
             }
         }
 
-        stage('Checkout Frontend Code') {
+        stage('Checkout Frontend code') {
                     steps {
-                        script {
-                            // Checkout the code for the frontend from its Git repository
-                            checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]) // Replace with your frontend repo URL
-                        }
+                        checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
                     }
                 }
+
+
 
         stage('Build') {
             steps {
