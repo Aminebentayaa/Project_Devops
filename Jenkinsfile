@@ -3,11 +3,20 @@ pipeline {
 
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Backend code') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
             }
         }
+
+        stage('Checkout Frontend Code') {
+                    steps {
+                        script {
+                            // Checkout the code for the frontend from its Git repository
+                            checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]) // Replace with your frontend repo URL
+                        }
+                    }
+                }
 
         stage('Build') {
             steps {
@@ -36,6 +45,20 @@ pipeline {
                            }
                        }
                    }
+
+                   stage('Build Angular') {
+                               steps {
+                                   script {
+                                       // Navigate to the frontend directory (if needed)
+                                       dir('frontend') {
+                                           // Install Angular dependencies and build the Angular app
+                                           sh 'npm install'
+                                           sh 'ng build --prod'
+                                       }
+                                   }
+                               }
+                           }
+                       }
 
     }
 
