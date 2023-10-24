@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    tools {
+    nodejs '21.0.0'
+    }
 
     stages {
         stage('Checkout Backend code') {
@@ -40,17 +43,18 @@ pipeline {
                            }
                        }
                    }
-                   
+
                stage('Checkout Frontend code') {
                     steps {
                         checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
                     }
                 }
-                   stage('Build Angular') {
+                    stage('Build Angular') {
                                steps {
                                    script {
                                        // Navigate to the frontend directory (if needed)
                                        dir('frontend') {
+                                           sh 'npm version'
                                            // Install Angular dependencies and build the Angular app
                                            sh 'npm install'
                                            sh 'ng build --prod'
