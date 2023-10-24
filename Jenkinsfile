@@ -9,11 +9,7 @@ pipeline {
             }
 
         }
-        stage('Checkout Frontend code') {
-                    steps {
-                        checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
-                    }
-                }
+
 
 
 
@@ -44,7 +40,12 @@ pipeline {
                            }
                        }
                    }
-
+                   
+               stage('Checkout Frontend code') {
+                    steps {
+                        checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
+                    }
+                }
                    stage('Build Angular') {
                                steps {
                                    script {
