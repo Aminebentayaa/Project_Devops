@@ -67,13 +67,6 @@ pipeline {
 
     }
 
-    post {
-        success {
-            echo 'Build and tests successful!'
-        }
-
-        failure {
-            echo 'Build and tests failed. Please investigate.'
-        }
+   
     }
 
