@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        NEXUS_CRED = credentials('NEXUS_CRED')
+        DOCKERHUB_CRED = credentials('DOCKERHUB_CRED')
+    }
+
     tools {
         nodejs 'node'
     }
@@ -8,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Backend code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
             }
         }
 
@@ -27,13 +32,11 @@ pipeline {
 
         stage('Build and Analyze') {
             steps {
-                script {
-                    sh 'mvn clean verify sonar:sonar ' +
-                       '-Dsonar.projectKey=sonar ' +
-                       '-Dsonar.projectName=\'sonar\' ' +
-                       '-Dsonar.host.url=http://192.168.33.10:9000 ' +
-                       '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
-                }
+                sh 'mvn clean verify sonar:sonar ' +
+                   '-Dsonar.projectKey=sonar ' +
+                   '-Dsonar.projectName=\'sonar\' ' +
+                   '-Dsonar.host.url=http://192.168.33.10:9000 ' +
+                   '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
             }
         }
 
@@ -50,11 +53,11 @@ pipeline {
                         nexusArtifactUploader(
                             nexusVersion: 'nexus3',
                             protocol: 'http',
-                            nexusUrl: '192.168.33.10:8081',
+                            nexusUrl: 'http://192.168.33.10:8081',
                             groupId: 'pom.tn.esprit',
                             version: 'pom.1.0',
                             repository: 'maven-central-repo',
-                            credentialsId: 'NEXUS_CRED',
+                            credentialsId: NEXUS_CRED,
                             artifacts: [
                                 [artifactId: 'pom.DevOps_Project',
                                  classifier: '',
@@ -75,7 +78,7 @@ pipeline {
 
         stage('Checkout Frontend code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
             }
         }
 
@@ -96,7 +99,7 @@ pipeline {
             steps {
                 script {
                     // Clone the backend repository
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
                     
                     // Build the Docker image for the Spring Boot backend
                     def backendImageTag = "Devops-project-1.0:latest"
@@ -104,7 +107,7 @@ pipeline {
                     sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
                     
                     // Push the backend Docker image to Docker Hub
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://index.docker.io/v1/']) {
+                    withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
                         sh "docker push ${backendImageTag}"
                     }
                     
@@ -112,7 +115,7 @@ pipeline {
                     deleteDir()
                     
                     // Clone the frontend repository
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
                     
                     // Build the Docker image for the Angular frontend
                     def frontendImageTag = "Devops-project-front:latest"
@@ -120,7 +123,7 @@ pipeline {
                     sh "docker build -t ${frontendImageTag} -f ${frontendDockerfile} ."
                     
                     // Push the frontend Docker image to Docker Hub
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://index.docker.io/v1/']) {
+                    withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
                         sh "docker push ${frontendImageTag}"
                     }
                 }
