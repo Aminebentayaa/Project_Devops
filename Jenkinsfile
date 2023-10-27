@@ -122,7 +122,7 @@ pipeline {
                                                sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
 
                                                // Push the backend Docker image to Docker Hub
-                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
+                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://registry.hub.docker.com']) {
                                                    sh "docker push ${backendImageTag}"
                                                }
 
@@ -138,7 +138,7 @@ pipeline {
                                                sh "docker build -t ${frontendImageTag} -f ${frontendDockerfile} ."
 
                                                // Push the frontend Docker image to Docker Hub
-                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
+                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://registry.hub.docker.com']) {
                                                    sh "docker push ${frontendImageTag}"
                                                }
                                            }
