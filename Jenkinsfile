@@ -117,7 +117,7 @@ pipeline {
                                                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
 
                                                // Build the Docker image for the Spring Boot backend
-                                               def backendImageTag = "Devops-project-1.0:latest"
+                                               def backendImageTag = "devops-project-1.0:latest"
                                                def backendDockerfile = 'Dockerfile'  // Path to Dockerfile in the backend repository
                                                sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
 
@@ -133,7 +133,7 @@ pipeline {
                                                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
 
                                                // Build the Docker image for the Angular frontend
-                                               def frontendImageTag = "Devops-project-front:latest"
+                                               def frontendImageTag = "devops-project-front:latest"
                                                def frontendDockerfile = 'Dockerfile'  // Path to Dockerfile in the frontend repository
                                                sh "docker build -t ${frontendImageTag} -f ${frontendDockerfile} ."
 
