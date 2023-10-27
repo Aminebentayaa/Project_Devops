@@ -112,6 +112,41 @@ pipeline {
 
                        }
 
+                       stage('Build and Push Docker Images') {
+                                   steps {
+                                       script {
+                                           // Clone the backend repository
+                                           checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
+
+                                           // Build the Docker image for the Spring Boot backend
+                                           def backendImageTag = "Devops-project-1.0:latest"
+                                           def backendDockerfile = 'Dockerfile'  // Path to Dockerfile in the backend repository
+                                           sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
+
+                                           // Push the backend Docker image to Docker Hub
+                                           withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://registry.hub.docker.com']) {
+                                               sh "docker push ${backendImageTag}"
+                                           }
+
+                                           // Clean up the workspace before cloning the frontend repository
+                                           deleteDir()
+
+                                           // Clone the frontend repository
+                                           checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://hub.docker.com/repository/docker/brain99/devops_project/general']])
+
+                                           // Build the Docker image for the Angular frontend
+                                           def frontendImageTag = "Devops-project-front:latest"
+                                           def frontendDockerfile = 'Dockerfile'  // Path to Dockerfile in the frontend repository
+                                           sh "docker build -t ${frontendImageTag} -f ${frontendDockerfile} ."
+
+                                           // Push the frontend Docker image to Docker Hub
+                                           withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://hub.docker.com/repository/docker/brain99/devops_project/general']) {
+                                               sh "docker push ${frontendImageTag}"
+                                           }
+                                       }
+                                   }
+                               }
+
 
     }
 
