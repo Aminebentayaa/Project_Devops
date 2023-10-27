@@ -124,7 +124,7 @@ pipeline {
                                            sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
 
                                            // Push the backend Docker image to Docker Hub
-                                           withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://registry.hub.docker.com']) {
+                                           withDockerRegistry([credentialsId: 'DOCKERHUB_CRED', url: 'https://hub.docker.com/repository/docker/brain99/devops_project/general']) {
                                                sh "docker push ${backendImageTag}"
                                            }
 
@@ -132,7 +132,7 @@ pipeline {
                                            deleteDir()
 
                                            // Clone the frontend repository
-                                           checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://hub.docker.com/repository/docker/brain99/devops_project/general']])
+                                           checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
 
                                            // Build the Docker image for the Angular frontend
                                            def frontendImageTag = "Devops-project-front:latest"
