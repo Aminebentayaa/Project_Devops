@@ -114,7 +114,7 @@ pipeline {
                                        steps {
                                            script {
                                                // Clone the backend repository
-                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
+                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
 
                                                // Build the Docker image for the Spring Boot backend
                                                def backendImageTag = "Devops-project-1.0:latest"
@@ -130,7 +130,7 @@ pipeline {
                                                deleteDir()
 
                                                // Clone the frontend repository
-                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
+                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
 
                                                // Build the Docker image for the Angular frontend
                                                def frontendImageTag = "Devops-project-front:latest"
