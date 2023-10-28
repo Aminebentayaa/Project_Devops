@@ -1,9 +1,18 @@
 pipeline {
     agent any
 
+
+
     tools {
     nodejs 'node'
     }
+
+      environment {
+            DOCKER_IMAGE_Back_NAME = 'brain99/devops_project_back:spring'
+            DOCKER_IMAGE_Front_NAME = 'brain99/devops_project_front:angular'
+
+        }
+
 
     stages {
 
@@ -84,6 +93,26 @@ pipeline {
                                                    }
                                                }
 
+                                                stage('Build image spring') {
+                                                           steps {
+                                                               script {
+                                                                   // Build the Docker image for the Spring Boot app
+                                                                   sh "docker build -t $DOCKER_IMAGE_Back_NAME ."
+                                                               }
+                                                           }
+                                                       }
+
+                                                       stage('Push image spring') {
+                                                           steps {
+                                                               script {
+                                                                   withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
+                                                                       // Push the Docker image to Docker Hub
+                                                                       sh "docker push $DOCKER_IMAGE_Back_NAME"
+                                                                   }
+                                                               }
+                                                           }
+                                                           }
+
 
 
 
@@ -110,40 +139,22 @@ pipeline {
                                }
                            }
 
-                           stage('Build and Push Docker Images') {
-                                       steps {
-                                           script {
-                                               // Clone the backend repository
-                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']])
 
-                                               // Build the Docker image for the Spring Boot backend
-                                               def backendImageTag = "Devops-project-1.0:latest"
-                                               def backendDockerfile = 'Dockerfile'  // Path to Dockerfile in the backend repository
-                                               sh "docker build -t ${backendImageTag} -f ${backendDockerfile} ."
+        stage('Push image Angular') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
+                        // Push the Docker image to Docker Hub
+                        sh "docker push $DOCKER_IMAGE_Front_NAME"
+                    }
+                }
+            }
 
-                                               // Push the backend Docker image to Docker Hub
-                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
-                                                   sh "docker push ${backendImageTag}"
-                                               }
+            }
 
-                                               // Clean up the workspace before cloning the frontend repository
-                                               deleteDir()
 
-                                               // Clone the frontend repository
-                                               checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']])
 
-                                               // Build the Docker image for the Angular frontend
-                                               def frontendImageTag = "Devops-project-front:latest"
-                                               def frontendDockerfile = 'Dockerfile'  // Path to Dockerfile in the frontend repository
-                                               sh "docker build -t ${frontendImageTag} -f ${frontendDockerfile} ."
 
-                                               // Push the frontend Docker image to Docker Hub
-                                               withDockerRegistry([credentialsId: DOCKERHUB_CRED, url: 'https://index.docker.io/v1/']) {
-                                                   sh "docker push ${frontendImageTag}"
-                                               }
-                                           }
-                                       }
-                                   }
                                }
 
 
