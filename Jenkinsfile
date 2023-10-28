@@ -141,18 +141,13 @@ pipeline {
                 }
 
              
-                    stage('Deploy with Docker Compose') {
-                        steps {
-                            script {
-                                // Make sure you are in the directory where the docker-compose.yml file is located
+                    stage('Build and Deploy') {
+    steps {
+        // Checkout your source code from the version control system if needed
 
-                                     dir('https://github.com/Aminebentayaa/Project_Devops/blob/main/docker-compose.yml') {  // Adjust the path to the repository
-                        sh 'docker compose up -d'  // Use -d to run containers in the background
-                    }
-
-                            }
-                        }
-                    }
+        // Start the application stack using Docker Compose
+        sh "/usr/bin/docker-compose -f docker-compose.yml up -d"
+    }
 
 
 
