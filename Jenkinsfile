@@ -102,16 +102,7 @@ pipeline {
                                                            }
                                                        }
 
-                                                       stage('Push image spring') {
-                                                           steps {
-                                                               script {
-                                                                   withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                                                                       // Push the Docker image to Docker Hub
-                                                                       sh "docker push $DOCKER_IMAGE_Back_NAME"
-                                                                   }
-                                                               }
-                                                           }
-                                                           }
+                                                  
 
 
 
@@ -149,23 +140,13 @@ pipeline {
                     }
                 }
 
-                stage('Push image Angular') {
-                    steps {
-                        script {
-                            withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                                // Push the Docker image to Docker Hub
-                                sh "docker push $DOCKER_IMAGE_Front_NAME"
-                            }
-                        }
-                    }
-                    }
-
+             
                     stage('Deploy with Docker Compose') {
                         steps {
                             script {
                                 // Make sure you are in the directory where the docker-compose.yml file is located
 
-                                    sh '/usr/bin/docker-compose -f docker-compose up -d'  // Use -d to run containers in the background
+                                    sh 'docker compose up -d'  // Use -d to run containers in the background
 
                             }
                         }
