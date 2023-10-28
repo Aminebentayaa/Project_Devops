@@ -164,9 +164,9 @@ pipeline {
                         steps {
                             script {
                                 // Make sure you are in the directory where the docker-compose.yml file is located
-                                dir('path/to/your/docker-compose-directory') {
+
                                     sh 'docker-compose up -d'  // Use -d to run containers in the background
-                                }
+
                             }
                         }
                     }
