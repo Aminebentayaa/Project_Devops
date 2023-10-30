@@ -157,7 +157,7 @@ pipeline {
     steps {
         // Checkout your source code from the version control system if needed
 
-<<<<<<< HEAD
+
                     stage('Push image Angular') {
                                         steps {
                                             script {
