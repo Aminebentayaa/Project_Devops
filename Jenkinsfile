@@ -154,35 +154,28 @@ pipeline {
                     }
 
 
-       stage('Send Email on Success') {
-        steps {
-            script {
-                currentBuild.resultIsBetterOrEqualTo('SUCCESS')  // Check if the build result is SUCCESS
-            }
-            post {
-                success {
-                    emailext body: 'Build succeeded! Your custom message here.',
-                            subject: 'Build Successful',
-                            to: 'mohamedamine.bentayaa@esprit.tn'
-                }
-            }
-        }
     }
 
-    stage('Send Email on Failure') {
-        steps {
-            script {
-                currentBuild.resultIsWorseOrEqualTo('FAILURE')  // Check if the build result is FAILURE
-            }
-            post {
-                failure {
-                    emailext body: 'Build failed! Your custom message here.',
-                            subject: 'Build Failed',
-                            to: 'mohamedamine.bentayaa@esprit.tn'
-                }
-            }
+
+    
+    post {
+        success {
+
+             emailext subject: 'Successful Build Notification',
+                body: 'The Jenkins pipeline build was successful.',
+                to: 'mohamedamine.bentayaa@esprit.tn',
+                from: 'mohamedamine.bentayaa@esprit.tn'
+            echo 'Build successful!'
         }
-    }
+
+        failure {
+
+             emailext subject: 'Failed Build Notification',
+                body: 'The Jenkins pipeline build failed. Please investigate.',
+                to: 'mohamedamine.bentayaa@esprit.tn',
+                from: 'mohamedamine.bentayaa@esprit.tn'
+            echo 'Build failed. Please investigate.'
+        }
 
 
 
