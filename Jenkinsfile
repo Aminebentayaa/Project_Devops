@@ -102,16 +102,7 @@ pipeline {
                                                            }
                                                        }
 
-                                                       stage('Push image spring') {
-                                                           steps {
-                                                               script {
-                                                                   withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                                                                       // Push the Docker image to Docker Hub
-                                                                       sh "docker push $DOCKER_IMAGE_Back_NAME"
-                                                                   }
-                                                               }
-                                                           }
-                                                           }
+                                                      
 
 
 
@@ -149,16 +140,7 @@ pipeline {
                     }
                 }
 
-                stage('Push image Angular') {
-                    steps {
-                        script {
-                            withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                                // Push the Docker image to Docker Hub
-                                sh "docker push $DOCKER_IMAGE_Front_NAME"
-                            }
-                        }
-                    }
-                    }
+            
 
                     stage('Deploy with Docker Compose') {
                         steps {
