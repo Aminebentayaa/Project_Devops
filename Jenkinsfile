@@ -102,10 +102,7 @@ pipeline {
                                                            }
                                                        }
 
-                                                  
-
-
-                                                         stage('Push image spring') {
+                                                       stage('Push image spring') {
                                                            steps {
                                                                script {
                                                                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
@@ -152,22 +149,16 @@ pipeline {
                     }
                 }
 
-             
-                    stage('Build and Deploy') {
-    steps {
-        // Checkout your source code from the version control system if needed
-
-
-                    stage('Push image Angular') {
-                                        steps {
-                                            script {
-                                                withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                                                    // Push the Docker image to Docker Hub
-                                                    sh "docker push $DOCKER_IMAGE_Front_NAME"
-                                                }
-                                            }
-                                        }
-                                        }
+                stage('Push image Angular') {
+                    steps {
+                        script {
+                            withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
+                                // Push the Docker image to Docker Hub
+                                sh "docker push $DOCKER_IMAGE_Front_NAME"
+                            }
+                        }
+                    }
+                    }
 
                     stage('Deploy with Docker Compose') {
                         steps {
@@ -180,21 +171,13 @@ pipeline {
                         }
                     }
 
-        // Start the application stack using Docker Compose
-        sh "/usr/bin/docker-compose -f docker-compose.yml up -d"
-    }
-
-
 
 
 
                                }
 
 
+
+
+
     }
-
-
-    }
-
-
-
