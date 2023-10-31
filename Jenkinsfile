@@ -68,7 +68,7 @@ pipeline {
                             
                                 // Make sure you are in the directory where the docker-compose.yml file is located
 
-                                    sh '/usr/bin/docker-compose -f docker-compose2.yml up -d'  // Use -d to run containers in the background
+                                    sh '/usr/bin/docker-compose -f docker-compose.yml up -d'  // Use -d to run containers in the background
 
                             
                         }
