@@ -32,7 +32,7 @@ pipeline {
                                            // Install Angular dependencies and build the Angular app
                                            sh 'npm install'
                                            sh 'npm  install -g @angular/cli'
-                                           sh 'ng build --prod --base-href /' 
+                                           sh 'ng build --configuration=production --base-href /' 
                                        }
                                    }
                                }
