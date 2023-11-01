@@ -23,56 +23,7 @@ pipeline {
                     }
                 }
                    
-  stage('Build Angular') {
-                               steps {
-                                   script {
-                                       // Navigate to the frontend directory (if needed)
-                                       dir('frontend') {
-                                           sh 'npm version'
-                                           // Install Angular dependencies and build the Angular app
-                                           sh 'npm install'
-                                           sh 'npm  install -g @angular/cli'
-                                           sh 'ng build --configuration=production '
-                                       }
-                                   }
-                               }
-                           }
-
-
-        stage('Build image Angular') {
-                    steps {
-                        script {
-                            // Build the Docker image for the Spring Boot app
-                            sh "docker build -t $DOCKER_IMAGE_Front_NAME ."
-                        }
-                    }
-                }
-
-        stage('Push image Angular') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_Front_NAME"
-                    }
-                }
-            }
-          }
-
-
-
-     
-
-                        stage('Deploy with Docker Compose') {
-                        steps {
-                            
-                                // Make sure you are in the directory where the docker-compose.yml file is located
-
-                                    sh '/usr/bin/docker-compose -f docker-compose.yml up -d'  // Use -d to run containers in the background
-
-                            
-                        }
-                    }
+ 
 
           stage('Deploy with Docker Compose2') {
                         steps {
