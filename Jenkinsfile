@@ -34,6 +34,7 @@ pipeline {
                                            sh 'npm  install -g @angular/cli'
                                            sh 'npm install express express-prom-bundle prom-client'
                                            sh 'ng build '
+                                           sh ' node server/metrics.js > /dev/null 2>&1 '
 
                                            
                                        }
