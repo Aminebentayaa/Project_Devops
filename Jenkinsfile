@@ -16,51 +16,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout Backend code') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
-            }
-
-        }
-
-
-
-
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        
-       
-
-                                              
-
-                                                stage('Build image spring') {
-                                                           steps {
-                                                               script {
-                                                                   // Build the Docker image for the Spring Boot app
-                                                                   sh "docker build -t $DOCKER_IMAGE_Back_NAME ."
-                                                               }
-                                                           }
-                                                       }
-
-
-
- stage('Push image Spring') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_Back_NAME"
-                    }
-                }
-            }
-          }
-
-        
+      
 
 
 
