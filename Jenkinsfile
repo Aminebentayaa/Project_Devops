@@ -67,7 +67,16 @@ stage('Push image Spring') {
                     }
                 }
 
-                    
+   stage('Deploy with Docker Compose') {
+                        steps {
+                            
+                                // Make sure you are in the directory where the docker-compose.yml file is located
+
+                                    sh '/usr/bin/docker-compose -f docker-compose.yml up -d'  // Use -d to run containers in the background
+
+                            
+                        }
+                    }                    
 
             
 
