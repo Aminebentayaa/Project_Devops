@@ -27,7 +27,44 @@ pipeline {
                         checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
                     }
                 }
-                  
+
+
+        stage('Build Angular') {
+                               steps {
+                                   script {
+                                       // Navigate to the frontend directory (if needed)
+                                       dir('frontend') {
+                                           sh 'npm version'
+                                           // Install Angular dependencies and build the Angular app
+                                           sh 'npm install'
+                                           sh 'npm  install -g @angular/cli'
+                                           sh 'ng build '
+                                       }
+                                   }
+                               }
+                           }
+
+
+        stage('Build image Angular') {
+                    steps {
+                        script {
+                            // Build the Docker image for the Spring Boot app
+                            sh "docker build -t $DOCKER_IMAGE_Front_NAME ."
+                        }
+                    }
+                }
+
+        stage('Push image Angular') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
+                        // Push the Docker image to Docker Hub
+                        sh "docker push $DOCKER_IMAGE_Front_NAME"
+                    }
+                }
+            }
+          }
+
 
             
 
