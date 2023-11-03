@@ -18,54 +18,7 @@ pipeline {
 
 
 
-        stage('Checkout Backend code') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops.git']]])
-            }
-
-        }
-
-
-
-
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run tests and collect test results
-                sh 'mvn test' // Modify the test command as needed
-
-                // Archive test results for Jenkins to display
-                junit '**/target/surefire-reports/*.xml'
-            }
-        }
         
-
-                                                stage('Build image spring') {
-                                                           steps {
-                                                               script {
-                                                                   // Build the Docker image for the Spring Boot app
-                                                                   sh "docker build -t $DOCKER_IMAGE_Back_NAME ."
-                                                               }
-                                                           }
-                                                       }
-
-                                                      
- stage('Push image Spring') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_Back_NAME"
-                    }
-                }
-            }
-          }
 
 
 
@@ -77,41 +30,7 @@ pipeline {
                         checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Aminebentayaa/Project_Devops_front.git']]])
                     }
                 }
-                    stage('Build Angular') {
-                               steps {
-                                   script {
-                                       // Navigate to the frontend directory (if needed)
-                                       dir('frontend') {
-                                           sh 'npm version'
-                                           // Install Angular dependencies and build the Angular app
-                                           sh 'npm install'
-                                           sh 'npm  install -g @angular/cli'
-                                           sh 'ng build '
-                                       }
-                                   }
-                               }
-                           }
-
-
-        stage('Build image Angular') {
-                    steps {
-                        script {
-                            // Build the Docker image for the Spring Boot app
-                            sh "docker build -t $DOCKER_IMAGE_Front_NAME ."
-                        }
-                    }
-                }
-
-        stage('Push image Angular') {
-            steps {
-                script {
-                    withDockerRegistry([credentialsId: 'DOCKERHUB_CRED',url: ""]) {
-                        // Push the Docker image to Docker Hub
-                        sh "docker push $DOCKER_IMAGE_Front_NAME"
-                    }
-                }
-            }
-          }
+                   
 
             
 
