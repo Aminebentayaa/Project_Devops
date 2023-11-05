@@ -53,6 +53,8 @@ pipeline {
                                   '-Dsonar.projectName=\'sonar\' ' +
                                   '-Dsonar.host.url=http://192.168.33.10:9000 ' +
                                   '-Dsonar.token=sqp_890d6702edbe35a5b006df8975b5271b01c399d9'
+                                  '-Dsonar.jacoco.reportPaths=target/jacoco.exec ' + // Path to the JaCoCo execution data file
+                                  '-Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml'
                            }
                        }
                    }
