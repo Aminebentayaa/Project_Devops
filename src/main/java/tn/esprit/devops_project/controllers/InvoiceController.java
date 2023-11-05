@@ -30,10 +30,7 @@ public class InvoiceController {
         invoiceService.cancelInvoice(invoiceId);
     }
 
-    @GetMapping("/invoice/supplier/{supplierId}")
-    public List<Invoice> getInvoicesBySupplier(@PathVariable Long supplierId) {
-        return invoiceService.getInvoicesBySupplier(supplierId);
-    }
+
 
     @PutMapping(value = "/invoice/operator/{idOperator}/{idInvoice}")
     public void assignOperatorToInvoice(@PathVariable Long idOperator,@PathVariable Long idInvoice) {

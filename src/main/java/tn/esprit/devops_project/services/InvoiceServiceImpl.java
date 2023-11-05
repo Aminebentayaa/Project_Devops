@@ -45,11 +45,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return invoiceRepository.findById(invoiceId).orElseThrow(() -> new NullPointerException("Invoice not found"));
 	}
 
-	@Override
-	public List<Invoice> getInvoicesBySupplier(Long idSupplier) {
-		Supplier supplier = supplierRepository.findById(idSupplier).orElseThrow(() -> new NullPointerException("Supplier not found"));
-		return (List<Invoice>) supplier.getInvoices();
-	}
+
 
 	@Override
 	public void assignOperatorToInvoice(Long idOperator, Long idInvoice) {
@@ -63,6 +59,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	public float getTotalAmountInvoiceBetweenDates(Date startDate, Date endDate) {
 		return invoiceRepository.getTotalAmountInvoiceBetweenDates(startDate, endDate);
 	}
+
+	public float getTotalAmountInvoicesForSupplier(Long idSupplier) {
+		Supplier supplier = supplierRepository.findById(idSupplier).orElseThrow(() -> new NullPointerException("Supplier not found"));
+
+		float totalAmount = 0.0f;
+		for (Invoice invoice : supplier.getInvoices()) {
+			totalAmount += invoice.getAmountInvoice();
+		}
+
+		return totalAmount;
+	}
+
 
 
 }

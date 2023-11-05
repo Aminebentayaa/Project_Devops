@@ -1,11 +1,11 @@
 package tn.esprit.devops_project.services;
 
+
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,12 +15,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.util.CollectionUtils;
+import tn.esprit.devops_project.entities.Stock;
 import tn.esprit.devops_project.entities.Supplier;
-import tn.esprit.devops_project.repositories.SupplierRepository;
 
 import java.util.List;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,40 +31,40 @@ import static org.junit.jupiter.api.Assertions.*;
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 @ActiveProfiles("test")
-class SupplierServiceImplTest {
-
+public class SupplierServiceImplTest {
     @Autowired
-    private SupplierServiceImpl supplierService;
+    private SupplierServiceImpl supplierService ;
 
-    @Mock
-    private SupplierRepository supplierRepository;
+
 
     @Test
-    @DatabaseSetup("/data-set/stock-data.xml")
-    void retrieveAllSuppliers() {
-        // Invoke the method from your service
-        List<Supplier> suppliers = supplierService.retrieveAllSuppliers();
-
-        // Perform assertions to check the results based on the expected state from the database setup
-        assertNotNull(suppliers);
-        assertEquals(3, suppliers.size()); // Adjust the expected size based on your database setup
-        // Add more specific assertions as needed
-
-    }
-/*
-    @Test
-    @DatabaseSetup("/data-set/stock-data.xml")
+    @DatabaseSetup("/data-set/supplier-data.xml")
     void addSupplier() {
         final Supplier supplier = new Supplier();
-        supplier.setLabel("arz");
+        supplier.setLabel("Label1");
         this.supplierService.addSupplier(supplier);
-        assertEquals(this.supplierService.retrieveAllSuppliers().size(),2);
-        assertEquals(this.supplierService.retrieveSupplier(2L).getLabel(),"arz");
+        assertEquals(this.supplierService.retrieveAllSuppliers().size(),3);
+        assertEquals(this.supplierService.retrieveSupplier(2L).getLabel(),"Label1");
+    }
+
+    @Test
+    @DatabaseSetup("/data-set/supplier-data.xml")
+    void retrieveSupplier() {
+        final Supplier supplier = this.supplierService.retrieveSupplier(1L);
+        assertEquals("Label", supplier.getLabel());
+    }
+
+    @Test
+    @DatabaseSetup("/data-set/supplier-data.xml")
+    void retrieveAllSupplier() {
+        final List<Supplier> allSuppliers = this.supplierService.retrieveAllSuppliers();
+        assertEquals(allSuppliers.size(), 2);
+
     }
 
 
     @Test
-    @DatabaseSetup("/data-set/stock-data.xml")
+    @DatabaseSetup("/data-set/supplier-data.xml")
     void updateSupplier() {
         // Create a new supplier and save it initially
         Supplier supplier1 = new Supplier();
@@ -91,7 +90,7 @@ class SupplierServiceImplTest {
 
 
     @Test
-    @DatabaseSetup("/data-set/stock-data.xml")
+    @DatabaseSetup("/data-set/supplier-data.xml")
     void deleteSupplier() {
         // Assuming there is a supplier with ID 1 in your test data
         Long supplierIdToDelete = 2L;
@@ -100,19 +99,14 @@ class SupplierServiceImplTest {
         supplierService.deleteSupplier(supplierIdToDelete);
 
         // Attempt to retrieve the supplier again
-        Supplier deletedSupplier = supplierService.retrieveSupplier(supplierIdToDelete);
+
 
         // Verify that the deletedSupplier is null, indicating that it was deleted
-        assertNull(deletedSupplier);
+        assertEquals(this.supplierService.retrieveAllSuppliers().size(),1L);
     }
 
 
-    @Test
-    @DatabaseSetup("/data-set/stock-data.xml")
-    void retrieveSupplier() {
-    final Supplier supplier = this.supplierService.retrieveSupplier(1L);
-        assertEquals("azer123", supplier.getLabel());
-    }
-*/
+
+
 
 }

@@ -5,23 +5,21 @@
             ID_STOCK="1"
     />
 
-    <supplier
-
-            ID_SUPPLIER="1"
-            code="azer123"
-            label="seazr"
-
+    <Product
+            id_product="1"
+            title="Product 1"
+            category="BOOKS"
+            price="20.0"
+            quantity="5"
+            STOCK_ID_STOCK="1"
     />
 
-    <supplier
-            ID_SUPPLIER="2"
-            code="azer12a3"
-            label="szr"
-            />
-
-    <supplier
-            ID_SUPPLIER="4"
-            code="azer12a3"
-            label="szr"
+    <Product
+            id_product="2"
+            title="Product 2"
+            category="ELECTRONICS"
+            price="50.0"
+            quantity="10"
+            STOCK_ID_STOCK="1"
     />
 </dataset>
